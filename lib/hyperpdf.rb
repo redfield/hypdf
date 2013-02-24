@@ -1,11 +1,17 @@
 require 'net/http'
 require "json"
-
-require "hyperpdf/version"
 require "hyperpdf/exceptions"
 
 class HyperPDF
 
+  # Initializes new HyperPDF object
+  #
+  # @param content [String] HTML document or URL
+  # @param options [Hash] Authorization and PDF options
+  # @option options [String] :user If provided, sets user name (by default uses ENV['HYPERPDF_USER'] variable)
+  # @option options [String] :password If provided, sets user password (by default uses ENV['HYPERPDF_PASSWORD'] variable)
+  #
+  # Full list of PDF options see on {http://docs.heroku.com HyperPDF page}
   def initialize(content, options = {})
     raise HyperPDF::ContentRequired if content.nil? || content.empty?
     @content = content
@@ -14,16 +20,23 @@ class HyperPDF
     @user = @options.delete(:user) || ENV["HYPERPDF_USER"]
     @password = @options.delete(:password) || ENV["HYPERPDF_PASSWORD"]
 
-    #@uri = URI('http://localhost:3000')
-    @uri = URI('http://192.168.0.103:3000')
     @req = Net::HTTP::Post.new('/pdf', {'Content-Type' => 'application/json'})
     @request_body = { user: @user, password: @password, content: @content, options: @options }
   end
 
+  # Generates PDF
+  #
+  # @return [String] Binary string containing the generated document
   def get
     make_request.body
   end
 
+  # Generates PDF and uploads it to AWS S3
+  #
+  # @param bucket [String] Your S3 bucket name
+  # @param key [String] Name for generated file
+  # @param public [Boolean] Sets public read access
+  # @return [String] Url to generated document
   def upload_to_s3(bucket, key, public = false)
     @request_body.merge!(bucket: bucket, key: key, public: public)
     resp = JSON.parse make_request.body
@@ -34,7 +47,9 @@ class HyperPDF
 
   def make_request
     @req.body = @request_body.to_json
-    resp = Net::HTTP.new(@uri.host, @uri.port).request(@req)
+    session = Net::HTTP.new('api.hyper-pdf.com', 443)
+    session.use_ssl = true
+    resp = session.request(@req)
 
     if resp.is_a? Net::HTTPOK
       resp

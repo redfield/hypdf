@@ -1,4 +1,4 @@
-Copyright (c) 2013 redfield
+Copyright (c) 2013 redfield (up.redfield@gmail.com)
 
 MIT License
 

@@ -1,24 +1,10 @@
-# Hyperpdf
+# HyperPDF
 
-TODO: Write a gem description
+Ruby wrapper around the [HyperPDF](https://addons.heroku.com/hyperpdf) API
 
-## Installation
+## Documentation
 
-Add this line to your application's Gemfile:
-
-    gem 'hyperpdf'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install hyperpdf
-
-## Usage
-
-TODO: Write usage instructions here
+Full documentation can be found [here](https://devcenter.heroku.com/articles/hyperpdf).
 
 ## Contributing
 
