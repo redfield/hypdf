@@ -1,6 +1,7 @@
 require 'net/http'
 require "json"
 require "hyperpdf/exceptions"
+require 'httparty'
 
 class HyperPDF
 
@@ -20,7 +21,6 @@ class HyperPDF
     @user = @options.delete(:user) || ENV["HYPERPDF_USER"]
     @password = @options.delete(:password) || ENV["HYPERPDF_PASSWORD"]
 
-    @req = Net::HTTP::Post.new('/pdf', {'Content-Type' => 'application/json'})
     @request_body = { user: @user, password: @password, content: @content, options: @options }
   end
 
@@ -45,22 +45,15 @@ class HyperPDF
 
   private
 
-  def make_request
-    @req.body = @request_body.to_json
-    session = Net::HTTP.new('api.hyper-pdf.com', 443)
-    session.use_ssl = true
-    resp = session.request(@req)
-
-    if resp.is_a? Net::HTTPOK
-      resp
-    else
-      case resp.code
-      when "400" then raise HyperPDF::ContentRequired
-      when "401" then raise HyperPDF::AuthorizationRequired
-      when "402" then raise HyperPDF::PaymentRequired
-      when "404" then raise HyperPDF::NoSuchBucket
-      when "500" then raise HyperPDF::InternalServerError
-      end
+  def make_request(options={})
+    resp = HTTParty.post('https://api.hyper-pdf.com/pdf', options.merge(body: @request_body))
+    case resp.code
+    when 200 then resp
+    when 400 then raise HyperPDF::ContentRequired
+    when 401 then raise HyperPDF::AuthorizationRequired
+    when 402 then raise HyperPDF::PaymentRequired
+    when 404 then raise HyperPDF::NoSuchBucket
+    when 500 then raise HyperPDF::InternalServerError
     end
   end
 
