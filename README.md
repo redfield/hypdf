@@ -4,7 +4,7 @@ Ruby wrapper around the [HyperPDF](https://addons.heroku.com/hyperpdf) API
 
 ## Documentation
 
-Full documentation can be found [here](https://devcenter.heroku.com/articles/hyperpdf).
+Full documentation can be found [here](https://devcenter.heroku.com/articles/hyperpdf#toc).
 
 ## Contributing
 
