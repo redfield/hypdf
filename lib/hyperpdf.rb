@@ -26,7 +26,7 @@ class HyperPDF
 
   # Generates PDF
   #
-  # @return [String] Binary string containing the generated document
+  # @return [String] Binary string containing the generated document or id of asynchronous job
   def get
     make_request.body
   end
@@ -36,11 +36,11 @@ class HyperPDF
   # @param bucket [String] Your S3 bucket name
   # @param key [String] Name for generated file
   # @param public [Boolean] Sets public read access
-  # @return [String] Url to generated document
+  # @return [String] Url to generated document or id of asynchronous job
   def upload_to_s3(bucket, key, public = false)
     @request_body.merge!(bucket: bucket, key: key, public: public)
     resp = JSON.parse make_request.body
-    resp["url"]
+    resp["url"] || resp["id"]
   end
 
   private
