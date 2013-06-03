@@ -43,10 +43,21 @@ class HyperPDF
     resp["url"] || resp["id"]
   end
 
+  # Returns PDF meta information
+  # @return [Hash] PDF meta information (nubmer of pages, page size and PDF version)
+  def meta
+    {
+      pages: @last_headers['hyperpdf-pages'].to_i,
+      page_size: @last_headers['hyperpdf-page-size'],
+      pdf_version: @last_headers['hyperpdf-pdf-version'].to_f
+    }
+  end
+
   private
 
   def make_request(options={})
     resp = HTTParty.post('https://api.hyper-pdf.com/pdf', options.merge(body: @request_body))
+    @last_headers = resp.headers
     case resp.code
     when 200 then resp
     when 400 then raise HyperPDF::ContentRequired
