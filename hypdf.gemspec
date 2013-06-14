@@ -1,16 +1,16 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'hyperpdf/version'
+require 'hypdf/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "hyperpdf"
-  gem.version       = HyperPDF::VERSION
+  gem.name          = "hypdf"
+  gem.version       = HyPDF::VERSION
   gem.authors       = ["redfield"]
   gem.email         = ["up.redfield@gmail.com"]
-  gem.description   = %q{Ruby wrapper around the HyperPDF API}
-  gem.summary       = %q{Ruby wrapper around the HyperPDF API}
-  gem.homepage      = "http://www.hyper-pdf.com"
+  gem.description   = %q{Ruby wrapper around the HyPDF API}
+  gem.summary       = %q{Ruby wrapper around the HyPDF API}
+  gem.homepage      = "https:/addons.heroku.com/hypdf"
   gem.license       = "MIT"
 
   gem.files         = `git ls-files`.split($/)

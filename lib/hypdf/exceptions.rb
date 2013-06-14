@@ -1,4 +1,4 @@
-class HyperPDF
+class HyPDF
 
   class ContentRequired < ArgumentError; end
 

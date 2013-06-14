@@ -1,25 +1,25 @@
 require 'net/http'
 require "json"
-require "hyperpdf/exceptions"
+require "hypdf/exceptions"
 require 'httparty'
 
-class HyperPDF
+class HyPDF
 
-  # Initializes new HyperPDF object
+  # Initializes new HyPDF object
   #
   # @param content [String] HTML document or URL
   # @param options [Hash] Authorization and PDF options
-  # @option options [String] :user If provided, sets user name (by default uses ENV['HYPERPDF_USER'] variable)
-  # @option options [String] :password If provided, sets user password (by default uses ENV['HYPERPDF_PASSWORD'] variable)
+  # @option options [String] :user If provided, sets user name (by default uses ENV['HYPDF_USER'] variable)
+  # @option options [String] :password If provided, sets user password (by default uses ENV['HYPDF_PASSWORD'] variable)
   #
-  # Full list of PDF options see on {http://docs.heroku.com HyperPDF page}
+  # Full list of PDF options see on {http://docs.heroku.com HyPDF page}
   def initialize(content, options = {})
-    raise HyperPDF::ContentRequired if content.nil? || content.empty?
+    raise HyPDF::ContentRequired if content.nil? || content.empty?
     @content = content
 
     @options = options
-    @user = @options.delete(:user) || ENV["HYPERPDF_USER"]
-    @password = @options.delete(:password) || ENV["HYPERPDF_PASSWORD"]
+    @user = @options.delete(:user) || ENV["HYPDF_USER"]
+    @password = @options.delete(:password) || ENV["HYPDF_PASSWORD"]
 
     @request_body = { user: @user, password: @password, content: @content, options: @options }
   end
@@ -47,24 +47,24 @@ class HyperPDF
   # @return [Hash] PDF meta information (nubmer of pages, page size and PDF version)
   def meta
     {
-      pages: @last_headers['hyperpdf-pages'].to_i,
-      page_size: @last_headers['hyperpdf-page-size'],
-      pdf_version: @last_headers['hyperpdf-pdf-version'].to_f
+      pages: @last_headers['hypdf-pages'].to_i,
+      page_size: @last_headers['hypdf-page-size'],
+      pdf_version: @last_headers['hypdf-pdf-version'].to_f
     }
   end
 
   private
 
   def make_request(options={})
-    resp = HTTParty.post('https://api.hyper-pdf.com/pdf', options.merge(body: @request_body))
+    resp = HTTParty.post('https://www.hypdf.com/pdf', options.merge(body: @request_body))
     @last_headers = resp.headers
     case resp.code
     when 200 then resp
-    when 400 then raise HyperPDF::ContentRequired
-    when 401 then raise HyperPDF::AuthorizationRequired
-    when 402 then raise HyperPDF::PaymentRequired
-    when 404 then raise HyperPDF::NoSuchBucket
-    when 500 then raise HyperPDF::InternalServerError
+    when 400 then raise HyPDF::ContentRequired
+    when 401 then raise HyPDF::AuthorizationRequired
+    when 402 then raise HyPDF::PaymentRequired
+    when 404 then raise HyPDF::NoSuchBucket
+    when 500 then raise HyPDF::InternalServerError
     end
   end
 

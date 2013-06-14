@@ -1,10 +1,10 @@
-# HyperPDF
+# HyPDF
 
-Ruby wrapper around the [HyperPDF](https://addons.heroku.com/hyperpdf) API
+Ruby wrapper around the [HyPDF](https://addons.heroku.com/hypdf) API
 
 ## Documentation
 
-Full documentation can be found [here](https://devcenter.heroku.com/articles/hyperpdf#toc).
+Full documentation can be found [here](https://devcenter.heroku.com/articles/hypdf).
 
 ## Contributing
 

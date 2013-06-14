@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Hyperpdf do
+describe HyPDF do
   it 'should have a version number' do
-    Hyperpdf::VERSION.should_not be_nil
+    HyPDF::VERSION.should_not be_nil
   end
 
   it 'should do something useful' do
