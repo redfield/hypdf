@@ -17,5 +17,5 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}) { |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
-  gem.add_dependency "httparty", ">=0.10.0"
+  gem.add_dependency "httmultiparty", ">=0.3.10"
 end

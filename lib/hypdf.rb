@@ -1,9 +1,70 @@
-require 'net/http'
 require "json"
 require "hypdf/exceptions"
-require 'httparty'
+require 'httmultiparty'
 
 class HyPDF
+
+  HOST = 'https://www.hypdf.com'
+
+  class << self
+
+    def htmltopdf(content, options = {})
+      raise HyPDF::ContentRequired if content.nil? || content.empty?
+      options[:content] = content
+      response = request('htmltopdf', options)
+
+      result = {
+        pages: response.headers['hypdf-pages'].to_i,
+        page_size: response.headers['hypdf-page-size'],
+        pdf_version: response.headers['hypdf-pdf-version'].to_f
+      }
+
+      if options[:callback].nil? && options[:bucket].nil?
+        result.merge(pdf: response.body)
+      else
+        result.merge(JSON.parse(response.body, symbolize_names: true))
+      end
+    end
+
+    def pdfinfo(file, options = {})
+      options.merge!(file: File.new(file))
+      JSON.parse(request('pdfinfo', options).body)
+    end
+
+    def pdftotext(file, options = {})
+      options.merge!(file: File.new(file))
+      JSON.parse(request('pdftotext', options).body, symbolize_names: true)
+    end
+
+    def pdfextract(file, options = {})
+      options.merge!(file: File.new(file))
+      {pdf: request('pdfextract', options).body}
+    end
+
+    def pdfunite(file_1, file_2, options = {})
+      options.merge!(file_1: File.new(file_1))
+      options.merge!(file_2: File.new(file_2))
+      {pdf: request('pdfunite', options).body}
+    end
+
+    private
+
+    def request(method, body)
+      body[:user] ||= ENV["HYPDF_USER"]
+      body[:password] ||= ENV["HYPDF_PASSWORD"]
+
+      response = HTTMultiParty.post("#{HyPDF::HOST}/#{method}", body: body)
+      case response.code
+      when 200 then response
+      when 400 then raise HyPDF::ContentRequired
+      when 401 then raise HyPDF::AuthorizationRequired
+      when 402 then raise HyPDF::PaymentRequired
+      when 404 then raise HyPDF::NoSuchBucket
+      when 500 then raise HyPDF::InternalServerError
+      end
+    end
+
+  end
 
   # Initializes new HyPDF object
   #
@@ -14,6 +75,7 @@ class HyPDF
   #
   # Full list of PDF options see on {http://docs.heroku.com HyPDF page}
   def initialize(content, options = {})
+    puts "Warning! This syntax is deprecated and will be removed in the future version, please visit https://devcenter.heroku.com/articles/hypdf for details."
     raise HyPDF::ContentRequired if content.nil? || content.empty?
     @content = content
 
