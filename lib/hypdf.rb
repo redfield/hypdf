@@ -38,13 +38,25 @@ class HyPDF
 
     def pdfextract(file, options = {})
       options.merge!(file: File.new(file))
-      {pdf: request('pdfextract', options).body}
+      response = request('pdfextract', options).body
+
+      if options[:bucket].nil?
+        {pdf: response}
+      else
+        JSON.parse(response, symbolize_names: true)
+      end
     end
 
     def pdfunite(file_1, file_2, options = {})
       options.merge!(file_1: File.new(file_1))
       options.merge!(file_2: File.new(file_2))
-      {pdf: request('pdfunite', options).body}
+      response = request('pdfunite', options).body
+
+      if options[:bucket].nil?
+        {pdf: response}
+      else
+        JSON.parse(response, symbolize_names: true)
+      end
     end
 
     private
