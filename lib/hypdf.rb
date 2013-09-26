@@ -47,9 +47,11 @@ class HyPDF
       end
     end
 
-    def pdfunite(file_1, file_2, options = {})
-      options.merge!(file_1: File.new(file_1))
-      options.merge!(file_2: File.new(file_2))
+    def pdfunite(*params)
+      options = params.last.is_a?(Hash) ? params.delete_at(-1) : {}
+      params.each_with_index do |path, index|
+        options.merge!("file_#{index}" => File.new(path))
+      end
       response = request('pdfunite', options).body
 
       if options[:bucket].nil?
