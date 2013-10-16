@@ -26,6 +26,25 @@ class HyPDF
       end
     end
 
+    def jobstatus(job_id, options = {})
+      options[:job_id] = job_id
+      options[:user] ||= ENV["HYPDF_USER"]
+      options[:password] ||= ENV["HYPDF_PASSWORD"]
+
+      response = HTTMultiParty.get(
+        "#{HyPDF::HOST}/jobstatus",
+        query: options
+      )
+      case response.code
+      when 200 then JSON.parse(response.body)
+      when 400 then raise HyPDF::ContentRequired
+      when 401 then raise HyPDF::AuthorizationRequired
+      when 402 then raise HyPDF::PaymentRequired
+      when 404 then raise HyPDF::NoSuchBucket
+      when 500 then raise HyPDF::InternalServerError
+      end
+    end
+
     def pdfinfo(file, options = {})
       options.merge!(file: File.new(file))
       JSON.parse(request('pdfinfo', options).body)
