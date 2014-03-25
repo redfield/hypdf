@@ -4,6 +4,8 @@ class HyPDF
 
   class AuthorizationRequired < StandardError; end
 
+  class S3AccessDenied < StandardError; end
+
   class PaymentRequired < StandardError; end
 
   class NoSuchBucket < StandardError; end

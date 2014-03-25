@@ -40,6 +40,7 @@ class HyPDF
       when 400 then raise HyPDF::ContentRequired
       when 401 then raise HyPDF::AuthorizationRequired
       when 402 then raise HyPDF::PaymentRequired
+      when 403 then raise HyPDF::S3AccessDenied
       when 404 then raise HyPDF::NoSuchBucket
       when 500 then raise HyPDF::InternalServerError
       end
@@ -92,6 +93,7 @@ class HyPDF
       when 400 then raise HyPDF::ContentRequired
       when 401 then raise HyPDF::AuthorizationRequired
       when 402 then raise HyPDF::PaymentRequired
+      when 403 then raise HyPDF::S3AccessDenied
       when 404 then raise HyPDF::NoSuchBucket
       when 500 then raise HyPDF::InternalServerError
       end
