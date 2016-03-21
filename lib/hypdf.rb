@@ -51,6 +51,17 @@ class HyPDF
       JSON.parse(request('pdfinfo', options).body)
     end
 
+    def editmeta(file, options = {})
+      options.merge!(file: File.new(file))
+      response = request('editmeta', options).body
+
+      if options[:bucket].nil?
+        {pdf: response}
+      else
+        JSON.parse(response, symbolize_names: true)
+      end
+    end
+
     def pdftotext(file, options = {})
       options.merge!(file: File.new(file))
       JSON.parse(request('pdftotext', options).body, symbolize_names: true)
