@@ -10,13 +10,13 @@ Gem::Specification.new do |gem|
   gem.email         = ["up.redfield@gmail.com"]
   gem.description   = %q{Ruby wrapper around the HyPDF API}
   gem.summary       = %q{Ruby wrapper around the HyPDF API}
-  gem.homepage      = "https://addons.heroku.com/hypdf"
+  gem.homepage      = "https://elements.heroku.com/addons/hypdf"
   gem.license       = "MIT"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}) { |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
-  gem.add_dependency "httparty", "0.13.1"
-  gem.add_dependency "httmultiparty", "0.3.10"
+  gem.add_dependency "httparty", ">= 0.13.7"
+  gem.add_dependency "httmultiparty", ">= 0.3.16"
 end
