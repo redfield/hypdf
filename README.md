@@ -1,6 +1,6 @@
 # HyPDF
 
-Ruby wrapper around the [HyPDF](https://addons.heroku.com/hypdf) API
+Ruby wrapper around the [HyPDF](https://www.hypdf.com) API
 
 ## Documentation
 
