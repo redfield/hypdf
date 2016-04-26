@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["up.redfield@gmail.com"]
   gem.description   = %q{Ruby wrapper around the HyPDF API}
   gem.summary       = %q{Ruby wrapper around the HyPDF API}
-  gem.homepage      = "https://elements.heroku.com/addons/hypdf"
+  gem.homepage      = "https://www.hypdf.com"
   gem.license       = "MIT"
 
   gem.files         = `git ls-files`.split($/)
