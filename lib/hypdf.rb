@@ -4,8 +4,7 @@ require 'httmultiparty'
 
 class HyPDF
 
-  #HOST = 'https://www.hypdf.com'
-  HOST = 'http://localhost:3000'
+  HOST = 'https://www.hypdf.com'
 
   class << self
 
