@@ -4,8 +4,7 @@ require 'httmultiparty'
 
 class HyPDF
 
-  #HOST = 'https://www.hypdf.com'
-  HOST = 'http://localhost:3000'
+  HOST = 'https://www.hypdf.com'
 
   class << self
 
@@ -81,8 +80,8 @@ class HyPDF
 
     def pdfunite(*params)
       options = params.last.is_a?(Hash) ? params.delete_at(-1) : {}
-      params.each_with_index do |path, index|
-        options.merge!("file_#{index}" => File.new(path))
+      params.each_with_index do |param, index|
+        options.merge!("file_#{index}" => file_for(param, index))
       end
       response = request('pdfunite', options).body
 
@@ -111,6 +110,20 @@ class HyPDF
       end
     end
 
-  end
+    def file_for(param, index)
+      if pdf_header?(param)
+        uploadable_file(param, "file_#{index}.pdf")
+      else
+        File.new(param)
+      end
+    end
 
+    def pdf_header?(arg)
+      arg.is_a?(String) && arg.start_with?('%PDF-')
+    end
+
+    def uploadable_file(string, filename)
+      UploadIO.new(StringIO.new(string), 'application/octet-stream', filename)
+    end
+  end
 end
