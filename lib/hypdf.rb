@@ -80,8 +80,8 @@ class HyPDF
 
     def pdfunite(*params)
       options = params.last.is_a?(Hash) ? params.delete_at(-1) : {}
-      params.each_with_index do |path, index|
-        options.merge!("file_#{index}" => File.new(path))
+      params.each_with_index do |param, index|
+        options.merge!("file_#{index}" => file_for(param, index))
       end
       response = request('pdfunite', options).body
 
@@ -92,7 +92,39 @@ class HyPDF
       end
     end
 
+    def readform(file, options = {})
+      options.merge!(file: File.new(file))
+      JSON.parse(request('readform', options).body)
+    end
+
+    def fillform(file, options = {})
+      options.merge!(file: File.new(file))
+      response = request('fillform', options).body
+
+      if options[:bucket].nil?
+        {pdf: response}
+      else
+        JSON.parse(response, symbolize_names: true)
+      end
+    end
+
     private
+
+    def file_for(param, index)
+      if pdf_header?(param)
+        uploadable_file(param, "file_#{index}.pdf")
+      else
+        File.new(param)
+      end
+    end
+
+    def pdf_header?(arg)
+      arg.is_a?(String) && arg.start_with?('%PDF-')
+    end
+
+    def uploadable_file(string, filename)
+      UploadIO.new(StringIO.new(string), 'application/octet-stream', filename)
+    end
 
     def request(method, body)
       body[:user] ||= ENV["HYPDF_USER"]
