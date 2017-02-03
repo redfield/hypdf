@@ -4,7 +4,7 @@ require 'httmultiparty'
 
 class HyPDF
 
-  HOST = 'https://www.hypdf.com'
+  HOST = ENV['HYPDF_HOST'] || 'https://www.hypdf.com'
 
   class << self
 
