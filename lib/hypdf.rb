@@ -108,6 +108,28 @@ class HyPDF
       end
     end
 
+    def encryptpdf(file, options = {})
+      options.merge!(file: File.new(file))
+      response = request('encryptpdf', options).body
+
+      if options[:bucket].nil?
+        {pdf: response}
+      else
+        JSON.parse(response, symbolize_names: true)
+      end
+    end
+
+    def decryptpdf(file, options = {})
+      options.merge!(file: File.new(file))
+      response = request('decryptpdf', options).body
+
+      if options[:bucket].nil?
+        {pdf: response}
+      else
+        JSON.parse(response, symbolize_names: true)
+      end
+    end
+
     private
 
     def file_for(param, index)
