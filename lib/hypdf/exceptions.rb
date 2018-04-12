@@ -10,6 +10,8 @@ class HyPDF
 
   class NoSuchBucket < StandardError; end
 
+  class RequestTimeout < StandardError; end
+
   class InternalServerError < StandardError; end
 
 end
