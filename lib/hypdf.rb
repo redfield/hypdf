@@ -1,6 +1,6 @@
 require "json"
 require "hypdf/exceptions"
-require 'httmultiparty'
+require 'httparty'
 
 class HyPDF
 
@@ -31,7 +31,7 @@ class HyPDF
       options[:user] ||= ENV["HYPDF_USER"]
       options[:password] ||= ENV["HYPDF_PASSWORD"]
 
-      response = HTTMultiParty.get(
+      response = HTTParty.get(
         "#{HyPDF::HOST}/jobstatus",
         query: options
       )
@@ -153,7 +153,7 @@ class HyPDF
       body[:user] ||= ENV["HYPDF_USER"]
       body[:password] ||= ENV["HYPDF_PASSWORD"]
 
-      response = HTTMultiParty.post("#{HyPDF::HOST}/#{method}", body: body)
+      response = HTTParty.post("#{HyPDF::HOST}/#{method}", body: body)
       case response.code
       when 200 then response
       when 400 then raise HyPDF::ContentRequired
