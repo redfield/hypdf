@@ -1,5 +1,6 @@
-require "json"
-require "hypdf/exceptions"
+require 'json'
+require 'hypdf/exceptions'
+require 'hypdf/composite_io'
 require 'httparty'
 
 class HyPDF
