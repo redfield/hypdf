@@ -10,7 +10,7 @@ Full documentation can be found [here](https://devcenter.heroku.com/articles/hyp
 
 - `timeout` defaults to 60 (seconds)
 
-     HyPDF.configure {|c| c.timeout = 15 }
+        HyPDF.configure {|c| c.timeout = 15 }
 
 ## Contributing
 
