@@ -6,6 +6,12 @@ Ruby wrapper around the [HyPDF](https://www.hypdf.com) API
 
 Full documentation can be found [here](https://devcenter.heroku.com/articles/hypdf).
 
+## Configuration
+
+- `timeout` defaults to 60 (seconds)
+
+        HyPDF.configure {|c| c.timeout = 15 }
+
 ## Contributing
 
 1. Fork it
