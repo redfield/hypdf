@@ -1,4 +1,5 @@
 require 'json'
+require 'hypdf/config'
 require 'hypdf/exceptions'
 require 'hypdf/composite_io'
 require 'httparty'
@@ -153,8 +154,9 @@ class HyPDF
     def request(method, body)
       body[:user] ||= ENV["HYPDF_USER"]
       body[:password] ||= ENV["HYPDF_PASSWORD"]
+      timeout = HyPDF.config.timeout
 
-      response = HTTParty.post("#{HyPDF::HOST}/#{method}", body: body)
+      response = HTTParty.post("#{HyPDF::HOST}/#{method}", body: body, timeout: timeout)
       case response.code
       when 200 then response
       when 400 then raise HyPDF::ContentRequired
